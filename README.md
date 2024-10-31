@@ -49,6 +49,40 @@ with open(fpath, 'r', encoding="utf-8") as inp_file:
 
 `edge_index_entity_idx` - Comma-separated list of nodes that the tokens from edge_index_token_idx correspond to. This index describes ending nodes in a bipartite graph between tokens to graph nodes. The list length is $E$ which is equal to the length of edge_index_token_idx.
 
+## Data preprocessing
+`textkb/preprocessing/tokenize_sentences.py` - Sentences tokenization script
+```
+python textkb/preprocessing/tokenize_sentences.py \
+--input_sentences_dir "BERN2/annotated_pubmed_reformated/texts/" \
+--input_anno_dir "BERN2/bert_reformated_to_umls/" \
+--cui2node_id_path "BERN2/graph_dataset/cui2id" \
+--transformer_tokenizer_name "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext" \
+--output_dir "data/pretokenized_BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext/"
+--sentence_max_length 128 \
+--drop_sent_without_entities \
+--do_lower_case \
+--drop_cuiless
+```
+
+`textkb/preprocessing/tokenize_concept_names.py` - Concept name tokenization script
+```
+python textkb/preprocessing/tokenize_concept_names.py \
+--input_node2terms_path "data/graph_dataset/node_id2terms_list" \
+--transformer_tokenizer_name "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext" \
+--do_lower_case \
+--max_length 32 \
+--output_path "data/tokenized_BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext/"
+```
+
+`textkb/preprocessing/reformat_tokenized_sentences.py` - Step 2 sentence tokenization (samples offset-based indexing)
+```
+python textkb/preprocessing/reformat_tokenized_sentences.py \
+--tokenized_sentences_dir "data/pretokenized_BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext/" \
+--output_dir "data/tokenized_BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext/"
+```
+
+
+
 ## Training
 
 Training script example with Deepspeed:
