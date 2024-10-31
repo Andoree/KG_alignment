@@ -54,6 +54,14 @@ with open(fpath, 'r', encoding="utf-8") as inp_file:
 Training script example with Deepspeed:
 
 ```
+GRAPH_DATA_DIR="data/graph_data/"
+TRAIN_DATA_DIR="data/tokenized_data/train/"
+VAL_DATA_DIR="data/tokenized_data/val/"
+TOKENIZED_NODE_NAMES="data/tokenized_node_names"
+BERT_ENCODER_NAME="microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext"
+OUTPUT_DIR="pretrained_models/"
+
+
 deepspeed --include localhost textkb/training/train_modular_alignment_model_with_graph_encoder.py \
 --graph_data_dir ${GRAPH_DATA_DIR} \
 --train_data_dir ${TRAIN_DATA_DIR} \
