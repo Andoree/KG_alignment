@@ -7,7 +7,8 @@
 
 `graph_data_dir` - Pre-processed graph data directory with three files: (i) adjacency_lists, (ii) rel2id, (iii) rela2id.
   * (ii) and (iii) are tsv-file with mapping between relation names and relation ids: <relation_name>\t<relation_id>.
-  * Each line in (i) has the following format: <node_id>\t<edges>. Edges are separated with '|'. Each edge has format '<target_node>,<relation_id (rel)>,<subrelation_id (rela)>'
+  * Each line in (i) has the following format: <node_id>\t<edges>. Edges are separated with '|'.
+  * Each edge has format '<target_node>,<relation_id (rel)>,<subrelation_id (rela)>'
 
 `train_data_dir`  - Training data directory. The directory contains:
   * (i) textual files with tokenizer input samples;
