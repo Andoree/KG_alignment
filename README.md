@@ -49,5 +49,49 @@ with open(fpath, 'r', encoding="utf-8") as inp_file:
 
 `edge_index_entity_idx` - Comma-separated list of nodes that the tokens from edge_index_token_idx correspond to. This index describes ending nodes in a bipartite graph between tokens to graph nodes. The list length is $E$ which is equal to the length of edge_index_token_idx.
 
+## Training
 
+Training script example with Deepspeed:
+
+```
+deepspeed --include localhost textkb/training/train_modular_alignment_model_with_graph_encoder.py \
+--graph_data_dir ${GRAPH_DATA_DIR} \
+--train_data_dir ${TRAIN_DATA_DIR} \
+--val_data_dir ${VAL_DATA_DIR} \
+--tokenized_concepts_path ${TOKENIZED_NODE_NAMES} \
+--output_dir ${OUTPUT_DIR} \
+--mlm_task \
+--text_node_contrastive_task \
+--mlm_probability 0.15 \
+--concept_name_masking_prob 0.0 \
+--mention_masking_prob 0.0 \
+--sentence_emb_pooling "cls" \
+--concept_emb_pooling "mean" \
+--bert_encoder_name ${BERT_ENCODER_NAME} \
+--num_epochs 10 \
+--batch_size 256 \
+--bert_learning_rate 2e-5 \
+--graph_learning_rate 1e-4 \
+--max_num_warmup_steps 10000 \
+--warmup_steps_ratio 0.1 \
+--weight_decay 0.01 \
+--sentence_max_length 128 \
+--concept_max_length 32 \
+--contrastive_loss "infonce" \
+--contrastive_loss_weight 1.0 \
+--gat_num_layers 5 \
+--gat_num_hidden_channels 768 \
+--gat_dropout_p 0.1 \
+--gat_num_att_heads 2 \
+--gat_attention_dropout_p 0.1 \
+--gat_add_self_loops \
+--max_n_neighbors 3 \
+--deepspeed \
+--deepspeed_cfg_path "deepspeed_configs/ds_config_batch_256.json" \
+--use_cuda \
+--eval_every_N_steps 50000 \
+--save_every_N_steps 200000 \
+--save_every_N_epoch 5 \
+--dataloader_num_workers 4
+```
 
